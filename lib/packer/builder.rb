@@ -3,6 +3,7 @@ require 'packer/builders/all'
 
 module Packer
   class Builder < DataObject
+    AMAZON_CHROOT   = 'amazon-chroot'
     AMAZON_EBS      = 'amazon-ebs'
     AMAZON_INSTANCE = 'amazon-instance'
     DOCKER          = 'docker'
@@ -13,6 +14,7 @@ module Packer
     NULL            = 'null'
 
     VALID_BUILDER_TYPES = [
+      AMAZON_CHROOT,
       AMAZON_EBS,
       AMAZON_INSTANCE,
       DOCKER,
@@ -32,6 +34,7 @@ module Packer
       end
 
       {
+        AMAZON_CHROOT   => Packer::Builder::Amazon::Chroot,
         AMAZON_EBS      => Packer::Builder::Amazon::EBS,
         AMAZON_INSTANCE => Packer::Builder::Amazon::Instance,
         DOCKER          => Packer::Builder::Docker,

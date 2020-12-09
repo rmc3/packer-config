@@ -9,10 +9,7 @@ module Packer
         super
         self.add_required(
           'ami_name',
-          'instance_type',
-          'region',
-          'source_ami',
-          'communicator'
+          'source_ami'
         )
         self.communicators = %w(none ssh winrm)
       end
@@ -125,9 +122,86 @@ module Packer
         self.__add_string('vpc_id', id)
       end
 
+      class Chroot < Amazon
+        def initialize
+          super
+          self.required = []
+          self.add_required(
+            'ami_name',
+            'source_ami'
+          )
+          self.data['type'] = AMAZON_CHROOT
+        end
+
+        def chroot_mounts(mounts)
+          self.__add_array_of_strings('chroot_mounts', mounts)
+        end
+
+        def command_wrapper(wrapper)
+          self.__add_string('command_wrapper', wrapper)
+        end
+
+        def copy_files(files)
+          self.__add_array_of_strings('copy_files', files)
+        end
+
+        def device_path(path)
+          self.__add_string('device_path', path)
+        end
+
+        def nvme_device_path(path)
+          self.__add_string('nvme_device_path', path)
+        end
+
+        def from_scratch(build_from_scratch)
+          self.__add_boolean('from_scratch', build_from_scratch)
+        end
+
+        def mount_options(options)
+          self.__add_array_of_strings('mount_options', options)
+        end
+
+        def mount_partition(partition_number)
+          self.__add_string('mount_partition', partition_number)
+        end
+
+        def post_mount_commands(commands)
+          self.__add_array_of_strings('post_mount_commands', commands)
+        end
+
+        def pre_mount_commands(commands)
+          self.__add_array_of_strings('pre_mount_commands', commands)
+        end
+
+        def root_device_name(name)
+          self.__add_string('root_device_name', name)
+        end
+
+        def root_volume_size(size)
+          self.__add_integer('root_volume_type', size)
+        end
+
+        def root_volume_tags(tags)
+          self.__add_hash('root_volume_tags', tags)
+        end
+
+        def root_volume_tag(tag)
+          self.__add_array_of_strings('root_volume_tag', tag)
+        end
+
+        def ami_architecture(architecture)
+          self.__add_string('ami_architecture', architecture)
+        end
+      end
+
       class EBS < Amazon
         def initialize
           super
+          self.add_required(
+            'communicator',
+            'instance_type',
+            'region'
+          )
           self.data['type'] = AMAZON_EBS
         end
       end
@@ -138,6 +212,9 @@ module Packer
           self.data['type'] = AMAZON_INSTANCE
           self.add_required(
             'account_id',
+            'communicator',
+            'instance_type',
+            'region',
             's3_bucket',
             'x509_cert_path',
             'x509_key_path'

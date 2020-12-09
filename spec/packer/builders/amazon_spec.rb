@@ -54,6 +54,21 @@ RSpec.describe Packer::Builder::Amazon do
   end
 end
 
+RSpec.describe Packer::Builder::Amazon::Chroot do
+  let(:builder) { Packer::Builder.get_builder(Packer::Builder::AMAZON_CHROOT) }
+
+  it 'has a type of amazon-chroot' do
+    expect(builder.data['type']).to eq(Packer::Builder::AMAZON_CHROOT)
+  end
+
+  it 'requires ami_name and source_ami' do
+    expect { builder.validate }.to raise_error(Packer::DataObject::DataValidationError)
+    builder.ami_name 'foo'
+    builder.source_ami 'foo'
+    expect { builder.validate }.not_to raise_error
+  end
+end
+
 RSpec.describe Packer::Builder::Amazon::EBS do
   let(:builder) { Packer::Builder.get_builder(Packer::Builder::AMAZON_EBS) }
 
