@@ -194,7 +194,7 @@ module Packer
         end
 
         def ena_support(supported)
-          self.__add_bolean('ena_support', supported)
+          self.__add_boolean('ena_support', supported)
         end
       end
 
