@@ -192,6 +192,10 @@ module Packer
         def ami_architecture(architecture)
           self.__add_string('ami_architecture', architecture)
         end
+
+        def ena_support(supported)
+          self.__add_bolean('ena_support', supported)
+        end
       end
 
       class EBS < Amazon
