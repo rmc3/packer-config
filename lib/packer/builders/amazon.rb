@@ -134,7 +134,7 @@ module Packer
         end
 
         def chroot_mounts(mounts)
-          self.__add_array_of_strings('chroot_mounts', mounts)
+          self.__add_array_of_array_of_strings('chroot_mounts', mounts)
         end
 
         def command_wrapper(wrapper)
